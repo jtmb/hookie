@@ -113,9 +113,6 @@ services:
 
 ## Volumes Explained  
 
-- `/mnt/gluetun:/mnt/gluetun`
-  - Maps the host directory `/mnt/gluetun` where the port_forward file is located, only required if `PORT_FORWARDING` is set to `on`.
-
 - `/mnt/hookie:/app/state`
   - Maps the host directory `/mnt/hookie` to the container directory `/app/state`, used for storing state information.
 
