@@ -1,5 +1,18 @@
 #!/bin/bash
 
+echo "
+_     _  _____   _____  _     _ _____ _______
+|_____| |     | |     | |____/    |   |______
+|     | |_____| |_____| |    \_ __|__ |______
+
+Author: https://github.com/jtmb  |  Version: 1.0.0  |  License: MIT"
+echo "------------------------------------------"
+echo "${YELLOW}hookie${RESET} is ${GREEN}Running ✅${RESET}"
+echo "--------------------"
+echo ""
+echo "Running jobs..."
+
+
 # Function to validate required environment variables
 validate_variables() {
     if [[ -z "$GITHUB_TOKEN" ]]; then
@@ -98,18 +111,40 @@ mark_webhook_notified() {
     notified_in_run["$normalized_webhook"]=1
 }
 
-# Define the Discord webhook regex pattern
-DISCORD_WEBHOOK_PATTERN="https://discord\.com/api/webhooks/"
+# Function to check remaining quota and reset time
+check_rate_limit_and_wait() {
+    # echo "Checking GitHub API rate limit..."
+    
+    # Fetch rate limit information
+    rate_limit_response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/rate_limit")
+    remaining=$(jq '.rate.remaining' <<< "$rate_limit_response")
+    reset_time=$(jq '.rate.reset' <<< "$rate_limit_response")
+
+    # If remaining requests are zero, wait until reset time
+    if [[ "$remaining" -le 0 ]]; then
+        current_time=$(date '+%Y-%m-%d %H:%M:%S')
+        current_epoch=$(date +%s)
+        wait_time=$((reset_time - current_epoch))
+        wait_minutes=$((wait_time / 60))
+        
+        echo -e ""🛑"   Rate limit exceeded at $current_time. Waiting for $wait_time seconds (~$wait_minutes minutes) until reset at $(date -d @$reset_time '+%Y-%m-%d %H:%M:%S')."
+        sleep "$wait_time"
+    # else
+    #     echo "Remaining requests: $remaining"
+    fi
+}
 
 # Function to search commits in a repository for webhooks
 search_commits_for_webhooks() {
     local repo="$1"
 
+    # Check rate limit before proceeding
+    check_rate_limit_and_wait
+
     echo "Fetching latest commits from $repo..."
     commits=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
         "https://api.github.com/repos/$repo/commits" | jq -r '.[].sha // empty')
 
-    # Handle empty commits
     if [[ -z "$commits" ]]; then
         echo "No commits found for repository: $repo"
         return
@@ -117,32 +152,26 @@ search_commits_for_webhooks() {
 
     echo "Searching commits for Discord webhooks..."
     for commit_sha in $commits; do
-        # Fetch the commit data
+        # Check rate limit before processing each commit
+        check_rate_limit_and_wait
+
         commit_files=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             "https://api.github.com/repos/$repo/commits/$commit_sha")
 
-        # Check for errors in fetching commit data
-        if [[ -z "$commit_files" ]]; then
-            echo "⚠️ Error: Failed to fetch commit data for $commit_sha. Skipping..."
-            continue
-        fi
-
-        # Search for webhook patterns in the commit
         if echo "$commit_files" | grep -q "$DISCORD_WEBHOOK_PATTERN"; then
-            found_webhook=$(echo "$commit_files" | grep -o "$DISCORD_WEBHOOK_PATTERN[^ \"\']*" | head -n 1)
+            found_webhook=$(echo "$commit_files" | grep -o "$DISCORD_WEBHOOK_PATTERN[^ ]*" | head -n 1)
             normalized_webhook=$(normalize_webhook_url "$found_webhook")
             
-            # Check if the webhook has already been notified
             if is_webhook_notified "$normalized_webhook"; then
                 echo "✅ Webhook already notified: $normalized_webhook"
             else
-                echo "⚠️ Possible Discord webhook found in commit: $commit_sha"
+                echo "⚠️  Possible Discord webhook found in commit: $commit_sha"
                 echo "Webhook: $normalized_webhook"
                 send_discord_notification "$normalized_webhook" "$repo" "$commit_sha"
                 mark_webhook_notified "$normalized_webhook"
             fi
         else
-            echo "✅ No webhooks found in commit: $commit_sha"
+            echo ""✅"    No webhooks found in commit: $commit_sha"
         fi
     done
 }
