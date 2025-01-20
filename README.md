@@ -48,15 +48,15 @@ Designed with auditing in mind, hookie scans repositories for any potential Disc
 
 
 <details>
-  <summary>View Screenshots</summary>
+  <summary>View technical Screenshots</summary>
   <div style="display: flex; gap: 10px; margin-top: 10px;">
     <img src="src/hookie1.gif" alt="Description of first image" style="width: 50%; height: auto; border-radius: 5%;">
     <img src="src/hookie3.png" alt="Description of second image" style="width: 50%;height: auto; border-radius: 5%;">
-    <img src="src/hookie2.png" alt="Description of second image" style="width: 50%;height: auto; border-radius: 5%;">
   </div>
 </details>
-
-
+  <div style="display: flex; gap: 10px; margin-top: 10px;">
+    <img src="src/hookie2.png" alt="Description of second image" style="width: auto;height: auto; border-radius: 5%;">
+  </div>
 ## Prerequisites
 
 - **GitHub Personal Access Token (PAT)**: Used to authenticate with GitHub's API to access repository data.
