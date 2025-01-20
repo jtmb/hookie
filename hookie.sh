@@ -34,7 +34,6 @@ validate_variables() {
 # Validate environment variables
 validate_variables
 
-
 # Main loop
 while true; do
 
