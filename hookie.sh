@@ -150,7 +150,6 @@ if [[ "$1" == "--random" ]]; then
     repos=$(fetch_random_repositories)
     if [[ -z "$repos" ]]; then
         echo "No random repositories found."
-        exit 1
     fi
     for repo in $repos; do
         echo "Scanning repository: $repo"
