@@ -132,7 +132,7 @@ The script accepts several options for scanning repositories:
 To scan random repositories, use the `--random` option:
 
 ```bash
-./script.sh --random
+./hookie.sh --random
 ```
 
 This will fetch a list of random repositories from GitHub and scan them for potential Discord webhooks.
@@ -142,13 +142,13 @@ This will fetch a list of random repositories from GitHub and scan them for pote
 To scan a specific repository, provide the `owner/repo` as an argument:
 
 ```bash
-./script.sh <owner/repo>
+./hookie.sh <owner/repo>
 ```
 
 Example:
 
 ```bash
-./script.sh octocat/Hello-World
+./hookie.sh octocat/Hello-World
 ```
 
 This will scan the specific repository (`octocat/Hello-World`) for any webhooks.
@@ -158,13 +158,13 @@ This will scan the specific repository (`octocat/Hello-World`) for any webhooks.
 To scan all repositories of a specific GitHub user, use the `--user <username>` option:
 
 ```bash
-./script.sh --user <username>
+./hookie.sh --user <username>
 ```
 
 Example:
 
 ```bash
-./script.sh --user octocat
+./hookie.sh --user octocat
 ```
 
 This will scan all repositories of the user `octocat` for potential webhooks.
@@ -174,13 +174,13 @@ This will scan all repositories of the user `octocat` for potential webhooks.
 If you need help or want to see how to use the script, run it without any arguments or with the `--help` option:
 
 ```bash
-./script.sh
+./hookie.sh
 ```
 
 or
 
 ```bash
-./script.sh --help
+./hookie.sh --help
 ```
 
 This will display the usage instructions.
@@ -212,22 +212,22 @@ This will display the usage instructions.
 
 - Scan random repositories:
   ```bash
-  ./script.sh --random
+  ./hookie.sh --random
   ```
 
 - Scan a specific repository:
   ```bash
-  ./script.sh octocat/Hello-World
+  ./hookie.sh octocat/Hello-World
   ```
 
 - Scan all repositories of a user:
   ```bash
-  ./script.sh --user octocat
+  ./hookie.sh --user octocat
   ```
 
 - Get help:
   ```bash
-  ./script.sh --help
+  ./hookie.sh --help
   ```
 
 ## Contributing
