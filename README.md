@@ -5,7 +5,7 @@
 </h1>
 
 <div align="center">
-  <b>hookie</b> - Monitor your qBittorrent WEBUI and get push notifications.
+  <b>hookie</b> - Scan repositories for any potentialy leaked Discord webhooks.
   <br />
   <br />
   <a href="https://github.com/jtmb/hookie/issues/new?assignees=&labels=bug&title=bug%3A+">Report a Bug</a>
