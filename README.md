@@ -120,7 +120,7 @@ services:
   - Maps the host directory `/mnt/hookie` to the container directory `/app/state`, used for storing state information.
 
 
-## Running without docker
+# Running without docker
 
 1. Clone this repository or copy the script to your desired location.
 2. Modify the script to add your GitHub Personal Access Token (`GITHUB_TOKEN`), Discord Webhook URL (`NOTIFICATION_WEBHOOK`), and the file where notified webhooks will be saved (`NOTIFIED_WEBHOOKS_FILE`).
