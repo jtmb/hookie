@@ -1,17 +1,27 @@
 #!/bin/bash
 
-echo "
+# Check if arguments are provided
+if [[ -z "$1" ]]; then
+    # Show the help dialog only if no argument is provided
+    echo "Usage: $0 [--random | --user <username> | <owner/repo>]"
+    echo "  --random     Scan random repositories."
+    echo "  --user <username> Scan all repositories of the specified GitHub user."
+    echo "  <owner/repo> Scan a specific repository (e.g., ./hookie.sh octocat/Hello-World)."
+    exit 1
+else
+    # Show the banner when arguments are provided
+    echo "
 _     _  _____   _____  _     _ _____ _______
 |_____| |     | |     | |____/    |   |______
 |     | |_____| |_____| |    \_ __|__ |______
 
 Author: https://github.com/jtmb  |  Version: 1.0.0  |  License: GGPLv3"
-echo "------------------------------------------"
-echo "${YELLOW}hookie${RESET} is ${GREEN}Running ✅${RESET}"
-echo "--------------------"
-echo ""
-echo "Running jobs..."
-
+    echo "------------------------------------------"
+    echo "${YELLOW}hookie${RESET} is ${GREEN}Running ✅${RESET}"
+    echo "--------------------"
+    echo ""
+    echo "Running jobs..."
+fi
 
 # Function to validate required environment variables
 validate_variables() {
@@ -217,12 +227,6 @@ elif [[ "$1" == "--user" && -n "$2" ]]; then
 elif [[ -n "$1" ]]; then
     echo "Scanning specific repository: $1"
     search_commits_for_webhooks "$1"
-else
-    echo "Usage: $0 [--random | --user <username> | <owner/repo>]"
-    echo "  --random     Scan random repositories."
-    echo "  --user <username> Scan all repositories of the specified GitHub user."
-    echo "  <owner/repo> Scan a specific repository (e.g., octocat/Hello-World)."
-    exit 1
 fi
 
 done
