@@ -5,7 +5,7 @@ _     _  _____   _____  _     _ _____ _______
 |_____| |     | |     | |____/    |   |______
 |     | |_____| |_____| |    \_ __|__ |______
 
-Author: https://github.com/jtmb  |  Version: 1.0.0  |  License: MIT"
+Author: https://github.com/jtmb  |  Version: 1.0.0  |  License: GGPLv3"
 echo "------------------------------------------"
 echo "${YELLOW}hookie${RESET} is ${GREEN}Running ✅${RESET}"
 echo "--------------------"
@@ -70,10 +70,12 @@ generate_discord_payload() {
     local repo="$2"
     local commit_sha="$3"
 
-    local sanitized_webhook=$(echo "$found_webhook" | sed 's/"/\\"/g')
+    # Sanitize webhook URL with jq to escape any special characters
+    local sanitized_webhook=$(echo "$found_webhook" | jq -Rs .)
 
     cat <<EOF
 {
+  "username": "hookie",
   "content": "⚠️ A Discord webhook was detected in a commit!",
   "embeds": [
     {
@@ -82,7 +84,7 @@ generate_discord_payload() {
       "fields": [
         {
           "name": "Webhook URL",
-          "value": "$sanitized_webhook"
+          "value": $sanitized_webhook
         },
         {
           "name": "Commit SHA",
@@ -163,7 +165,7 @@ search_commits_for_webhooks() {
             normalized_webhook=$(normalize_webhook_url "$found_webhook")
             
             if is_webhook_notified "$normalized_webhook"; then
-                echo "✅ Webhook already notified: $normalized_webhook"
+                echo ""✅"  Webhook already notified: $normalized_webhook"
             else
                 echo "⚠️  Possible Discord webhook found in commit: $commit_sha"
                 echo "Webhook: $normalized_webhook"
@@ -171,7 +173,7 @@ search_commits_for_webhooks() {
                 mark_webhook_notified "$normalized_webhook"
             fi
         else
-            echo ""✅"    No webhooks found in commit: $commit_sha"
+            echo ""✅"  No webhooks found in commit: $commit_sha"
         fi
     done
 }
