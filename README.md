@@ -49,11 +49,11 @@ Designed with auditing in mind, hookie scans repositories for any potential Disc
 
 
   <div style="display: flex; gap: 10px; margin-top: 10px;">
-    <img src="src/hookie1.gif" alt="Description of first image" style="width: 50%; height: 50%; border-radius: 5%;">
+    <img src="src/hookie1.gif" alt="Description of first image" style="width: 80%; height: 50%; border-radius: 5%;">
   </div>
 
   <div style="display: flex; gap: 10px; margin-top: 10px;">
-    <img src="src/hookie2.png" alt="Description of second image" style="width: 50%;height: 50%; border-radius: 5%;">
+    <img src="src/hookie2.png" alt="Description of second image" style="width: 8-%;height: 50%; border-radius: 5%;">
   </div>
 
 ## Prerequisites
